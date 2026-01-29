@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>LinkedIn AI Reply — Panel</title>
+  <style>
+    body { width: 500px; }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h2>🤖 AI Reply Generator</h2>
+
+    <div class="section">
+      <label>Post/Comment Content</label>
+      <textarea id="postContent" placeholder="Paste the LinkedIn post or comment you want to reply to here..."></textarea>
+    </div>
+
+    <div class="section">
+      <label>API Key</label>
+      <div class="row gap-small">
+        <input type="password" id="apiKey" placeholder="sk-..." />
+        <button id="saveKey" class="btn-save">Save</button>
+      </div>
+      <p id="keyStatus"></p>
+    </div>
+
+    <div class="section">
+      <label>Tone</label>
+      <select id="tone">
+        <option value="professional">Professional</option>
+        <option value="friendly">Friendly</option>
+        <option value="supportive">Supportive</option>
+        <option value="technical">Technical</option>
+        <option value="short">Short & Smart</option>
+      </select>
+    </div>
+
+    <div class="section">
+      <label>Extra Rules (Optional)</label>
+      <textarea id="customRules" placeholder="Add any custom instructions for the AI (e.g., 'Keep it under 100 words', 'Include a question', 'Be more casual')..."></textarea>
+    </div>
+
+    <div class="section">
+      <label>Generated Reply</label>
+      <textarea id="output" placeholder="Your AI-generated reply will appear here..."></textarea>
+    </div>
+
+    <div class="row">
+      <button id="generate">Generate Reply</button>
+      <button id="pasteBtn">Paste</button>
+      <button id="closeBtn" class="secondary">Close</button>
+    </div>
+  </div>
+
+  <script src="panel.js"></script>
+</body>
+</html>
