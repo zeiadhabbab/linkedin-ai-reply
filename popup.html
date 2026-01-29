@@ -1,53 +1,61 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body { width: 420px; }
-  </style>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      body {
+        width: 420px;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>LinkedIn AI Reply</h3>
 
-<h3>LinkedIn AI Reply</h3>
+    <div class="section">
+      <label>Post/Comment Content</label>
+      <textarea
+        id="postContent"
+        placeholder="Paste the LinkedIn post or comment you want to reply to here..."
+      ></textarea>
+    </div>
 
-<div class="section">
-  <label>Post/Comment Content</label>
-  <textarea id="postContent" placeholder="Paste the LinkedIn post or comment you want to reply to here..."></textarea>
-</div>
+    <div class="section">
+      <label>API Key</label>
+      <div class="row gap-small">
+        <input type="password" id="apiKey" placeholder="sk-..." />
+        <button id="saveKey" class="btn-save">Save</button>
+      </div>
+      <p id="keyStatus"></p>
+    </div>
 
-<div class="section">
-  <label>API Key</label>
-  <div class="row gap-small">
-    <input type="password" id="apiKey" placeholder="sk-..." />
-    <button id="saveKey" class="btn-save">Save</button>
-  </div>
-  <p id="keyStatus"></p>
-</div>
+    <div class="section">
+      <label>Tone</label>
+      <select id="tone">
+        <option value="professional">Professional</option>
+        <option value="friendly">Friendly</option>
+        <option value="supportive">Supportive</option>
+        <option value="technical">Technical</option>
+        <option value="short">Short & Smart</option>
+      </select>
+    </div>
 
-<div class="section">
-  <label>Tone</label>
-  <select id="tone">
-    <option value="professional">Professional</option>
-    <option value="friendly">Friendly</option>
-    <option value="supportive">Supportive</option>
-    <option value="technical">Technical</option>
-    <option value="short">Short & Smart</option>
-  </select>
-</div>
+    <div class="section">
+      <label>Extra Rules (Optional)</label>
+      <textarea
+        id="customRules"
+        placeholder="Add any custom instructions for the AI (e.g., 'Keep it under 100 words', 'Include a question', 'Be more casual')..."
+      ></textarea>
+    </div>
 
-<div class="section">
-  <label>Extra Rules (Optional)</label>
-  <textarea id="customRules" placeholder="Add any custom instructions for the AI (e.g., 'Keep it under 100 words', 'Include a question', 'Be more casual')..."></textarea>
-</div>
+    <div class="row">
+      <button id="generate">Generate Reply</button>
+      <button id="copyBtn" class="success">Copy</button>
+      <button id="openWindow" class="secondary">Open in window</button>
+    </div>
 
-<div class="row">
-  <button id="generate">Generate & Paste</button>
-  <button id="openWindow" class="secondary">Open in window</button>
-</div>
+    <textarea id="output" placeholder="Generated reply..."></textarea>
 
-<textarea id="output" placeholder="Generated reply..."></textarea>
-
-<script src="popup.js"></script>
-</body>
+    <script src="popup.js"></script>
+  </body>
 </html>

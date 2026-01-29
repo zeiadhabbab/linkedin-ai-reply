@@ -3,9 +3,10 @@ const saveKeyBtn = document.getElementById("saveKey");
 const keyStatus = document.getElementById("keyStatus");
 const generateBtn = document.getElementById("generate");
 const output = document.getElementById("output");
+const copyBtn = document.getElementById("copyBtn");
 
 /* Load API Key */
-chrome.storage.local.get(["openai_api_key"], res => {
+chrome.storage.local.get(["openai_api_key"], (res) => {
   if (res.openai_api_key) keyStatus.textContent = "✅ API Key saved";
 });
 
@@ -43,7 +44,7 @@ function buildPrompt(text, tone, customRules = "") {
 - بدون هاشتاغ
 - بدون إيموجي إلا إذا كانت النبرة ودية${rulesText}
 `,
-      user: text
+      user: text,
     };
   }
 
@@ -57,13 +58,13 @@ Rules:
 - No hashtags
 - No emojis unless friendly${rulesText}
 `,
-    user: text
+    user: text,
   };
 }
 
 /* Generate + Paste */
 generateBtn.onclick = () => {
-  chrome.storage.local.get(["openai_api_key"], async res => {
+  chrome.storage.local.get(["openai_api_key"], async (res) => {
     if (!res.openai_api_key) {
       output.value = "❌ Please save your OpenAI API key first.";
       return;
@@ -77,17 +78,31 @@ generateBtn.onclick = () => {
 
     output.value = "⏳ Generating your reply...";
     const customRules = document.getElementById("customRules").value;
-    const prompt = buildPrompt(postContent, document.getElementById("tone").value, customRules);
+    const prompt = buildPrompt(
+      postContent,
+      document.getElementById("tone").value,
+      customRules,
+    );
     const reply = await callOpenAI(res.openai_api_key, prompt);
     output.value = reply;
 
-    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-      chrome.tabs.sendMessage(tabs[0].id, {
-        action: "PASTE_REPLY",
-        text: reply
-      }).catch(() => {});
-    });
   });
+};
+
+/* Copy to Clipboard */
+copyBtn.onclick = () => {
+  if (!output.value || output.value.startsWith("⏳") || output.value.startsWith("❌")) return;
+  
+  output.select();
+  document.execCommand("copy");
+  
+  const originalText = copyBtn.textContent;
+  copyBtn.textContent = "✅ Copied!";
+  copyBtn.classList.add("success");
+  setTimeout(() => {
+    copyBtn.textContent = originalText;
+    copyBtn.classList.remove("success");
+  }, 2000);
 };
 
 /* OpenAI Call */
@@ -95,17 +110,17 @@ async function callOpenAI(apiKey, prompt) {
   const res = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
-      "Authorization": `Bearer ${apiKey}`,
-      "Content-Type": "application/json"
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       model: "gpt-4.1-mini",
       messages: [
         { role: "system", content: prompt.system },
-        { role: "user", content: prompt.user }
+        { role: "user", content: prompt.user },
       ],
-      temperature: 0.7
-    })
+      temperature: 0.7,
+    }),
   });
 
   const data = await res.json();

@@ -26,27 +26,9 @@ function extractPostText(container) {
   return "";
 }
 
-function pasteReply(text) {
-  const box = document.querySelector(
-    'div[contenteditable="true"][role="textbox"]:focus'
-  );
-  if (!box) {
-    alert("Click the comment box first.");
-    return;
-  }
-  box.focus();
-  document.execCommand("selectAll", false);
-  document.execCommand("delete", false);
-  document.execCommand("insertText", false, text);
-}
-
 chrome.runtime.onMessage.addListener((req, _, sendResponse) => {
   if (req.action === "GET_POST_TEXT") {
     const text = extractPostText(getActivePostContainer());
     sendResponse({ text });
-  }
-
-  if (req.action === "PASTE_REPLY") {
-    pasteReply(req.text);
   }
 });

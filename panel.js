@@ -2,7 +2,7 @@ const apiKeyInput = document.getElementById("apiKey");
 const saveKeyBtn = document.getElementById("saveKey");
 const keyStatus = document.getElementById("keyStatus");
 const generateBtn = document.getElementById("generate");
-const pasteBtn = document.getElementById("pasteBtn");
+const copyBtn = document.getElementById("copyBtn");
 const closeBtn = document.getElementById("closeBtn");
 const output = document.getElementById("output");
 
@@ -86,10 +86,19 @@ generateBtn.onclick = async () => {
   });
 };
 
-pasteBtn.onclick = () => {
-  chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
-    chrome.tabs.sendMessage(tabs[0].id, { action: "PASTE_REPLY", text: output.value });
-  });
+copyBtn.onclick = () => {
+  if (!output.value || output.value.startsWith("⏳") || output.value.startsWith("❌")) return;
+  
+  output.select();
+  document.execCommand("copy");
+  
+  const originalText = copyBtn.textContent;
+  copyBtn.textContent = "✅ Copied!";
+  copyBtn.classList.add("success");
+  setTimeout(() => {
+    copyBtn.textContent = originalText;
+    copyBtn.classList.remove("success");
+  }, 2000);
 };
 
 closeBtn.onclick = () => {
